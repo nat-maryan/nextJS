@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import Error from 'next/error';
+import Layout from './components/Layout';
 
 class Story extends React.Component {
     static async getInitialProps({ req, res, query }) {
@@ -20,9 +21,18 @@ class Story extends React.Component {
     render() {
         const {story} = this.props;
         if(!story){
-            <Error></Error>
+           return <Error statusCode={503} />
         }
-        return <div>Story</div>
+        return <Layout title={story.title}>
+            <main>
+                <h1><a href={story.url}>{story.title}</a></h1>
+                <div className="story-details">
+                    <strong>{story.points} points</strong>
+                    <strong>{story.comments_count} comments</strong>
+                    <strong>{story.time_ago}</strong>
+                </div>
+            </main>
+        </Layout>
     }
 };
 
